@@ -1,8 +1,6 @@
-const express = require("express");
+const cTable = require("console.table");
 const mysql = require("mysql2");
-
-const port = process.env.PORT || 3001;
-const app = express();
+const inquirer = require("inquirer");
 
 const db = mysql.createConnection(
     {
@@ -16,3 +14,8 @@ const db = mysql.createConnection(
     },
     console.log("Connected to the company_db database.")
 );
+
+db.connect((error) => {
+    if (error) throw error;
+    console.log("EMPLOYEE TRACKER");
+});

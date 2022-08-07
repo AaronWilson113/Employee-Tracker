@@ -2,7 +2,7 @@
   "name": "employee-tracker",
   "version": "1.0.0",
   "description": "1. Write the schema.sql, and add the console.table package \r     CREATE TABLE department(\r         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, \r         name VARCHAR(30)\r     )",
-  "main": "server.js",
+  "main": "queries.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/AaronWilson113/Employee-Tracker#readme",
   "dependencies": {
-    "express": "^4.18.1",
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.4",
     "mysql2": "^2.3.3"
   }
 }
