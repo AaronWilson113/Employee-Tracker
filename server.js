@@ -55,7 +55,7 @@ const beginPrompts = () => {
         }
 
         if (choices === "Add a department") {
-           
+           addDepartment();
         }
 
         if (choices === "Add a role") {
@@ -98,4 +98,23 @@ const viewEmployees = () => {
         console.table(result);
         beginPrompts();   
     })
-}
+};
+
+
+addDepartment = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "addDepartment",
+            message: "Please enter the name of the department you want to add.",
+            validate: (value)=>{ if(value){return true} else {return 'please input your department name to continue'}},
+        }
+        
+    ]) 
+    .then(response => {
+        db.query(`INSERT INTO departments (department_name) VALUES (?)`, [response.addDepartment], (err) => {
+            if (err) throw err;
+            viewDepartments();
+        });
+    });
+};
