@@ -1,0 +1,21 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "1. Write the schema.sql, and add the console.table package \r     CREATE TABLE department(\r         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, \r         name VARCHAR(30)\r     )",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AaronWilson113/Employee-Tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AaronWilson113/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/AaronWilson113/Employee-Tracker#readme"
+}
