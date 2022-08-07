@@ -43,19 +43,19 @@ const beginPrompts = () => {
         const {choices} = answers;
 
         if (choices === "View all departments") {
-
+            viewDepartments();
         }
 
         if (choices === "View all employees") {
-
+            viewEmployees();
         }
         
         if (choices === "View all roles") {
-
+            viewRoles();
         }
 
         if (choices === "Add a department") {
-
+           
         }
 
         if (choices === "Add a role") {
@@ -75,3 +75,27 @@ const beginPrompts = () => {
         };
     });
 };
+
+const viewDepartments = () => {
+    db.query("SELECT departments.id AS id, departments.department_name AS department FROM departments", (err, result) => {
+        if (err) throw err;
+        console.table(result);
+        beginPrompts();
+    });
+};
+
+const viewRoles = () => {
+    db.query("SELECT roles.id, roles.role_name AS title, roles.role_salary AS salary, departments.department_name AS department FROM roles INNER JOIN departments ON roles.role_department = departments.id ", (err, result) => {
+        if (err) throw err;
+        console.table(result);
+        beginPrompts();   
+    });
+};
+
+const viewEmployees = () => {
+    db.query("SELECT employees.id, employees.first_name AS firstname, employees.last_name AS lastname, roles.role_name AS role, roles.role_salary AS salary FROM employees LEFT JOIN roles ON employees.role_id = roles.id", (err, result) => {
+        if (err) throw err;
+        console.table(result);
+        beginPrompts();   
+    })
+}
