@@ -2,6 +2,7 @@ const cTable = require("console.table");
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
 
+
 const db = mysql.createConnection(
     {
         host: "localhost",
@@ -18,4 +19,59 @@ const db = mysql.createConnection(
 db.connect((error) => {
     if (error) throw error;
     console.log("EMPLOYEE TRACKER");
+    beginPrompts();
 });
+
+const beginPrompts = () => {
+    inquirer.prompt([
+        {
+           type: "list",
+           name: "choices",
+           message: "what would you like to do?",
+           choices: ["View all departments",
+                     "View all employees",
+                     "View all roles",
+                     "Add a department",
+                     "Add a role",
+                     "Add an employee",
+                     "Update an employee role",
+                     "Done",
+                    ]
+        }
+    ])
+    .then((answers) => {
+        const {choices} = answers;
+
+        if (choices === "View all departments") {
+
+        }
+
+        if (choices === "View all employees") {
+
+        }
+        
+        if (choices === "View all roles") {
+
+        }
+
+        if (choices === "Add a department") {
+
+        }
+
+        if (choices === "Add a role") {
+
+        }
+
+        if (choices === "Add an employee") {
+
+        }
+
+        if (choices === "Update an employee role") {
+
+        }
+
+        if (choices === "Done") {
+            db.end();
+        };
+    });
+};
