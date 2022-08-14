@@ -161,8 +161,67 @@ async function addRoles () {
 
 async function addEmployee() {
     
-    const manager = await db.promise().query('SELECT first_name, last_name, id FROM employee WHERE employee.manager = 1');
+    const manager = await db.promise().query('SELECT first_name, last_name, id FROM employees WHERE employees.manager = 1');
 
-    console.log(manager)
+    const mgs = manager[0].map(({first_name, last_name, id}) => ({name: `${first_name} ${last_name}`, value: id}));
 
-}
+    const role = await db.promise().query("SELECT id, role_name FROM roles")
+
+    const r = role[0].map(({ id, role_name}) => ({ name: `${role_name}`, value: id}));
+
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "firstName",
+                message: "Please input the first name of your employee"
+            },
+            {
+                type: "input",
+                name: "lastName",
+                message: "Please input the last name of your employee"
+            },
+            {
+                type: "list",
+                name: "role",
+                message: "choose a role for your new employee",
+                choices: r
+            },
+            {
+                type: "confirm",
+                name: "managerConf",
+                message: "Would you like this employee to be a manager?",
+                default: "false"
+            },
+            {
+                type: "confirm",
+                name: "managerConfir",
+                message: "Would you like to add this employee under a manager?",
+                default: "true",
+            },
+            {
+                type: "list",
+                name: "ifManagerID",
+                message: "Choose a manager for your employee",
+                when: ({ managerConfir }) => managerConfir,
+                choices: mgs
+            }
+        ]).then(response => {
+            const first_name = response.firstName;
+            
+            const last_name = response.lastName;
+
+            const role_id = response.role;
+
+            const manager = response.managerConf;
+
+            const manager_id = response.managerConfir;
+
+            const params = [first_name, last_name, role_id, manager, manager_id];
+
+            db.query("INSERT INTO employees (first_name, last_name, role_id, manager, manager_id) VALUES (?, ?, ?, ?, ?)", params, (err, result) => {
+                if (err) throw err
+                viewEmployees;
+            });
+        });
+};
