@@ -55,11 +55,11 @@ const beginPrompts = () => {
         }
 
         if (choices === "Add a department") {
-           addDepartment();
+           addDepartments();
         }
 
         if (choices === "Add a role") {
-
+            addRoles();
         }
 
         if (choices === "Add an employee") {
@@ -101,7 +101,7 @@ const viewEmployees = () => {
 };
 
 
-addDepartment = () => {
+addDepartments = () => {
     inquirer.prompt([
         {
             type: "input",
@@ -112,9 +112,43 @@ addDepartment = () => {
         
     ]) 
     .then(response => {
-        db.query(`INSERT INTO departments (department_name) VALUES (?)`, [response.addDepartment], (err) => {
+        db.query(`INSERT INTO departments (department_name) VALUES (?)`, [response.addDepartment], (err, result) => {
             if (err) throw err;
             viewDepartments();
         });
     });
+};
+
+async function addRoles () {
+   
+    const dep = await db.promise().query("SELECT * FROM departments");
+
+    const depChoices = dep[0].map(({ id, name}) => ({ name: `${name}`, value: id}));
+
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "name",
+                message: "Please write the name for your new role"
+            },
+            {
+                type: "number",
+                name: "salary",
+                message: "Please input the salary for your new role"
+            },
+            {
+                type: "list",
+                name: "department",
+                message: "Please choose a department for your new role",
+                choices: depChoices
+            }
+        ]).then(response => {
+
+            const role_name = response.name;
+            const role_salary = response.salary;
+            const department_id = response.department;
+
+            const params = [];
+        })
 };

@@ -6,7 +6,7 @@ USE company_db;
 
 CREATE TABLE departments (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-    department_name VARCHAR (30)
+    name VARCHAR (30)
 );
 
 CREATE TABLE roles (
@@ -14,7 +14,7 @@ CREATE TABLE roles (
     role_name VARCHAR (30),
     role_salary INT NOT NULL,
     department_id INT,
-    FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL
+    CONSTRAINT fk_departments FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL
 );
 
 CREATE TABLE employees (
@@ -22,10 +22,9 @@ CREATE TABLE employees (
     first_name VARCHAR (30),
     last_name VARCHAR (30),
     role_id INT,
-    department_id INT,
+    manager BOOLEAN NOT NULL,
     manager_id INT,
-    FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NUll,
-    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL,
-    FOREIGN KEY (manager_id) REFERENCES employees(id) ON DELETE SET NULL
+   CONSTRAINT fk_roles FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL,
+   CONSTRAINT fk_employees FOREIGN KEY (manager_id) REFERENCES employees(id) ON DELETE SET NULL
 
 );
