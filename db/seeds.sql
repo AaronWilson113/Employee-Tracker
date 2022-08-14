@@ -1,4 +1,4 @@
-INSERT INTO departments (id, name)
+INSERT INTO departments (id, department_name)
 VALUES (001, "Product Management"),
        (002, "Engineering Department");
 

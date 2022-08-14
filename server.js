@@ -63,7 +63,7 @@ const beginPrompts = () => {
         }
 
         if (choices === "Add an employee") {
-
+            addEmployee();
         }
 
         if (choices === "Update an employee role") {
@@ -123,7 +123,7 @@ async function addRoles () {
    
     const dep = await db.promise().query("SELECT * FROM departments");
 
-    const depChoices = dep[0].map(({ id, name}) => ({ name: `${name}`, value: id}));
+    const depChoices = dep[0].map(({ id, department_name}) => ({ name: `${department_name}`, value: id}));
 
     inquirer
         .prompt([
@@ -149,6 +149,20 @@ async function addRoles () {
             const role_salary = response.salary;
             const department_id = response.department;
 
-            const params = [];
-        })
+            const params = [role_name, role_salary, department_id];
+
+            db.query("INSERT INTO roles (role_name, role_salary, department_id) VALUES (?, ?, ?)", params, (err, result) => {
+                if (err) throw err;
+                viewRoles();
+            });
+        });
 };
+
+
+async function addEmployee() {
+    
+    const manager = await db.promise().query('SELECT first_name, last_name, id FROM employee WHERE employee.manager = 1');
+
+    console.log(manager)
+
+}
