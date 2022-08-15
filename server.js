@@ -93,7 +93,7 @@ const viewRoles = () => {
 };
 
 const viewEmployees = () => {
-    db.query("SELECT employees.id, employees.first_name AS firstname, employees.last_name AS lastname, roles.role_name AS role, roles.role_salary AS salary, departments.department_name AS name FROM employees LEFT JOIN departments ON employees.department_id = departments.id LEFT JOIN roles ON employees.role_id = roles.id", (err, result) => {
+    db.query("SELECT employees.id, employees.first_name AS firstname, employees.last_name AS lastname, roles.role_name AS role, roles.role_salary AS salary FROM employees LEFT JOIN roles ON employees.role_id = roles.id", (err, result) => {
         if (err) throw err;
         console.table(result);
         beginPrompts();   
@@ -188,22 +188,9 @@ async function addEmployee() {
                 choices: r
             },
             {
-                type: "confirm",
-                name: "managerConf",
-                message: "Would you like this employee to be a manager?",
-                default: "false"
-            },
-            {
-                type: "confirm",
-                name: "managerConfir",
-                message: "Would you like to add this employee under a manager?",
-                default: "true",
-            },
-            {
                 type: "list",
                 name: "ifManagerID",
                 message: "Choose a manager for your employee",
-                when: ({ managerConfir }) => managerConfir,
                 choices: mgs
             }
         ]).then(response => {
@@ -213,14 +200,14 @@ async function addEmployee() {
 
             const role_id = response.role;
 
-            const manager = response.managerConf;
+            const manager = 0
 
-            const manager_id = response.managerConfir;
+            const manager_id = response.ifManagerID;
 
             const params = [first_name, last_name, role_id, manager, manager_id];
 
             db.query("INSERT INTO employees (first_name, last_name, role_id, manager, manager_id) VALUES (?, ?, ?, ?, ?)", params, (err, result) => {
-                if (err) throw err
+                if (err) throw err;
                 viewEmployees;
             });
         });
