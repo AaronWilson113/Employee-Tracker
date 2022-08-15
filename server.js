@@ -207,8 +207,8 @@ async function addEmployee() {
             const params = [first_name, last_name, role_id, manager, manager_id];
 
             db.query("INSERT INTO employees (first_name, last_name, role_id, manager, manager_id) VALUES (?, ?, ?, ?, ?)", params, (err, result) => {
-                if (err) throw err;
-                viewEmployees;
+                if (err) throw err
+                viewEmployees();
             });
         });
 };
